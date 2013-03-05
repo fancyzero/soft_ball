@@ -15,6 +15,7 @@
 #pragma mark - soft_ball
 @implementation soft_ball
 
+
 -(b2Body*) create_ball: (b2World*) world :(const b2Vec2&) pos  :(float) radius_in_physics_unit
 {
 	b2BodyDef bodyDef;
@@ -37,7 +38,7 @@
 {
     //define our contants
     float   ball_radius_inner = 1.0f;
-    float   ball_radius_outter = 0.2f;
+    float   ball_radius_outter = 0.1f;
     float   ball_outter_distance = 1.5;
 
     m_num_segment = num_segment;
@@ -60,7 +61,8 @@
         int neighbor = (i + 1) % num_segment;
         b2Body *current_ball = m_outter_balls[i];
         b2Body *neighbor_ball = m_outter_balls[neighbor];
-        float frequencyHz = 10;
+        float frequencyHz = 30;
+        float damping = 0.6;
         // Connect the outer circles to each other
         b2DistanceJointDef joint;
         
@@ -69,7 +71,7 @@
                          neighbor_ball->GetWorldCenter() );
         joint.collideConnected = true;
         joint.frequencyHz = frequencyHz;
-        joint.dampingRatio = 0.5f;
+        joint.dampingRatio = damping;
         
         world->CreateJoint(&joint);
         
@@ -77,7 +79,7 @@
         joint.Initialize(current_ball, m_inner_ball, current_ball->GetWorldCenter(), m_inner_ball->GetWorldCenter());
         joint.collideConnected = true;
         joint.frequencyHz = frequencyHz;
-        joint.dampingRatio = 0.5;
+        joint.dampingRatio = damping;
         
         world->CreateJoint(&joint);
         
@@ -122,6 +124,84 @@
 									   x,	y );	
 	
 	return transform_;
+}
+
+
+
+ccVertex3F make_vec( float x, float y)
+{
+    ccVertex3F v;
+    v.x = x;
+    v.y = y;
+    v.z = 0;
+    return v;
+}
+
+ccTex2F make_uv( float x, float y)
+{
+    ccTex2F v;
+    v.u = x;
+    v.v = y;
+    return v;
+}
+
+-(void) draw
+{
+    //顶点数据
+
+    
+    CGPoint pos = ccp( [self nodeToParentTransform].tx, [self nodeToParentTransform].ty);
+    
+    //设置扇形中心点坐标
+    m_vertices[0].vertices = make_vec( m_inner_ball->GetPosition().x * PTM_RATIO - pos.x, m_inner_ball->GetPosition().y * PTM_RATIO  - pos.y );
+    //设置扇形中心点uv
+    m_vertices[0].texCoords = make_uv(0.5f, 0.5f);
+    m_vertices[0].colors = ccc4(255, 255, 255, 255);
+
+    for ( int i = 0; i < m_num_segment; i++ )
+    {
+        b2Body *current_ball = m_outter_balls[i];
+        m_vertices[i+1].vertices = make_vec( current_ball->GetPosition().x * PTM_RATIO  - pos.x, current_ball->GetPosition().y * PTM_RATIO  - pos.y );
+        GLfloat rad =  CC_DEGREES_TO_RADIANS(360.0f/m_num_segment * i);
+        m_vertices[i+1].texCoords = make_uv( 0.5+cosf(rad)*0.5, 0.5+sinf(rad)*-0.5   );
+        m_vertices[i+1].colors = ccc4(255, 255, 255, 255);
+    }
+ 
+    //封闭扇形
+    m_vertices[m_num_segment+1] = m_vertices[1];
+    
+    //设置gl渲染环境
+	CC_NODE_DRAW_SETUP();
+
+	ccGLBlendFunc( blendFunc_.src, blendFunc_.dst );
+    
+	ccGLBindTexture2D( [texture_ name] );
+    
+	//
+	// Attributes
+	//
+    
+	ccGLEnableVertexAttribs( kCCVertexAttribFlag_PosColorTex  );
+    
+	// vertex
+	NSInteger diff = offsetof( ccV3F_C4B_T2F, vertices);
+	glVertexAttribPointer(kCCVertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, sizeof(ccV3F_C4B_T2F), (void*) ((char*)m_vertices + diff));
+    
+	// texCoods
+	diff = offsetof( ccV3F_C4B_T2F, texCoords);
+	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, sizeof(ccV3F_C4B_T2F), (void*)((char*)m_vertices+ diff));
+    
+	// color
+	diff = offsetof( ccV3F_C4B_T2F, colors);
+	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(ccV3F_C4B_T2F), (void*)((char*)m_vertices + diff));
+    
+    
+    
+	glDrawArrays(GL_TRIANGLE_FAN, 0, m_num_segment + 2);
+    
+	CHECK_GL_ERROR_DEBUG();
+
+    
 }
 
 -(void) dealloc

@@ -216,7 +216,7 @@ enum {
 	
 	kmGLPushMatrix();
 	
-	world->DrawDebugData();	
+	//world->DrawDebugData();
 	
 	kmGLPopMatrix();
 }
@@ -227,13 +227,18 @@ enum {
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
 	CCNode *parent = [self getChildByTag:kTagParentNode];
-	
 
-	soft_ball *ball = [soft_ball new];
-	[parent addChild:ball];
+
+	soft_ball* ball;
+    ball = [ [soft_ball alloc] initWithTexture:spriteTexture_ ];
+
+	[ self addChild:ball ];
 	
 	ball.position = ccp( p.x, p.y);
-	[ball init_physics:world :10];
+	[ball init_physics:world :15];
+    
+
+
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
 
