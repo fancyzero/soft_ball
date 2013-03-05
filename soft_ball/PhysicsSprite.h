@@ -9,9 +9,12 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 
-@interface PhysicsSprite : CCSprite
+@interface soft_ball : CCNode
 {
-	b2Body *body_;	// strong ref
+	b2Body  *m_inner_ball;
+    b2Body  *m_outter_balls[1024];
+    int     m_num_segment;
 }
--(void) setPhysicsBody:(b2Body*)body;
+
+-(void) init_physics:( b2World* ) world :(int) num_segment;
 @end

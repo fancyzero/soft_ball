@@ -62,7 +62,7 @@ enum {
 		
 		//Set up sprite
 		
-#if 1
+#if 0
 		// Use batch node. Faster
 		CCSpriteBatchNode *parent = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:100];
 		spriteTexture_ = [parent texture];
@@ -166,9 +166,9 @@ enum {
 	
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
-	//		flags += b2Draw::e_jointBit;
+			flags += b2Draw::e_jointBit;
 	//		flags += b2Draw::e_aabbBit;
-	//		flags += b2Draw::e_pairBit;
+			flags += b2Draw::e_pairBit;
 	//		flags += b2Draw::e_centerOfMassBit;
 	m_debugDraw->SetFlags(flags);		
 	
@@ -221,39 +221,26 @@ enum {
 	kmGLPopMatrix();
 }
 
+
+
 -(void) addNewSpriteAtPosition:(CGPoint)p
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
 	CCNode *parent = [self getChildByTag:kTagParentNode];
 	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	PhysicsSprite *sprite = [PhysicsSprite spriteWithTexture:spriteTexture_ rect:CGRectMake(32 * idx,32 * idy,32,32)];						
-	[parent addChild:sprite];
+
+	soft_ball *ball = [soft_ball new];
+	[parent addChild:ball];
 	
-	sprite.position = ccp( p.x, p.y);
-	
+	ball.position = ccp( p.x, p.y);
+	[ball init_physics:world :10];
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	b2Body *body = world->CreateBody(&bodyDef);
+
 	
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
+
+
 	
-	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
-	
-	[sprite setPhysicsBody:body];
 }
 
 -(void) update: (ccTime) dt
