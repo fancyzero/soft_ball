@@ -275,6 +275,15 @@ enum {
 	}
 }
 
+#pragma mark accelerometer
+
+- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
+    float g = 10;
+    //使用landscape，所以x,y互换
+    world->SetGravity(b2Vec2(acceleration.y*g, -acceleration.x*g));
+}
+
 #pragma mark GameKit delegate
 
 -(void) achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
