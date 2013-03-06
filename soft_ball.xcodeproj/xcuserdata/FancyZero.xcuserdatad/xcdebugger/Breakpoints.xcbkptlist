@@ -8,7 +8,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "soft_ball/HelloWorldLayer.mm"
-         timestampString = "384185218.94911"
+         timestampString = "384251938.156669"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "215"
@@ -20,25 +20,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "151"
-         endingLineNumber = "151"
-         landmarkName = "-draw"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "soft_ball/HelloWorldLayer.mm"
-         timestampString = "384194041.025342"
+         timestampString = "384251938.156669"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "229"
-         endingLineNumber = "229"
+         startingLineNumber = "228"
+         endingLineNumber = "228"
          landmarkName = "-addNewSpriteAtPosition:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "soft_ball/HelloWorldLayer.mm"
-         timestampString = "384194044.875468"
+         timestampString = "384251938.156669"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "233"
-         endingLineNumber = "233"
+         startingLineNumber = "232"
+         endingLineNumber = "232"
          landmarkName = "-addNewSpriteAtPosition:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -59,78 +46,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
+         filePath = "soft_ball/HelloWorldLayer.mm"
+         timestampString = "384252606.957865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
-         landmarkName = "-draw"
+         startingLineNumber = "277"
+         endingLineNumber = "277"
+         landmarkName = "-ccTouchesEnded:withEvent:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
+         filePath = "soft_ball/libs/Box2D/Dynamics/b2Body.h"
+         timestampString = "384252502.427506"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "171"
-         endingLineNumber = "171"
-         landmarkName = "-draw"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
-         landmarkName = "-nodeToParentTransform"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
-         landmarkName = "-draw"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "174"
-         endingLineNumber = "174"
-         landmarkName = "-draw"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "soft_ball/PhysicsSprite.mm"
-         timestampString = "384197733.37018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "200"
-         endingLineNumber = "200"
-         landmarkName = "-draw"
+         startingLineNumber = "763"
+         endingLineNumber = "763"
+         landmarkName = "b2Body::ApplyForceToCenter(const b2Vec2&amp; force)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

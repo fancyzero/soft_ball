@@ -17,7 +17,7 @@
 enum {
 	kTagParentNode = 1,
 };
-
+soft_ball* g_ball;
 
 #pragma mark - HelloWorldLayer
 
@@ -49,7 +49,7 @@ enum {
 	if( (self=[super init])) {
 		
 		// enable events
-		
+		m_accum_time = 0;
 		self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
 		CGSize s = [CCDirector sharedDirector].winSize;
@@ -74,7 +74,7 @@ enum {
 		[self addChild:parent z:0 tag:kTagParentNode];
 		
 		
-		[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
+        [self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
 		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -226,7 +226,6 @@ enum {
 -(void) addNewSpriteAtPosition:(CGPoint)p
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCNode *parent = [self getChildByTag:kTagParentNode];
 
 
 	soft_ball* ball;
@@ -235,9 +234,9 @@ enum {
 	[ self addChild:ball ];
 	
 	ball.position = ccp( p.x, p.y);
-	[ball init_physics:world :15];
+	[ ball init_physics:world :30 ];
     
-
+    g_ball = ball;
 
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
@@ -256,11 +255,16 @@ enum {
 	//http://gafferongames.com/game-physics/fix-your-timestep/
 	
 	int32 velocityIterations = 8;
-	int32 positionIterations = 1;
+	int32 positionIterations = 8;
 	
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);	
+    m_accum_time += dt;
+    while ( m_accum_time > 0.016f)
+    {
+        world->Step(0.016f, velocityIterations, positionIterations);
+        m_accum_time -= 0.016;
+    }
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -270,8 +274,9 @@ enum {
 		CGPoint location = [touch locationInView: [touch view]];
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
-		
-		[self addNewSpriteAtPosition: location];
+       // g_ball->m_inner_ball->ApplyForceToCenter(b2Vec2(100,1000));
+        g_ball->m_inner_ball->SetLinearVelocity(b2Vec2(1000,0));
+		//[self addNewSpriteAtPosition: location];
 	}
 }
 
@@ -279,7 +284,7 @@ enum {
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-    float g = 10;
+    float g = 30;
     //使用landscape，所以x,y互换
     world->SetGravity(b2Vec2(acceleration.y*g, -acceleration.x*g));
 }

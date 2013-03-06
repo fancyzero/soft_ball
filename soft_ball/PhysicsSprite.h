@@ -11,6 +11,7 @@
 
 @interface soft_ball : CCSprite
 {
+    @public
 	b2Body  *m_inner_ball;
     b2Body  *m_outter_balls[1024];
     int     m_num_segment;
