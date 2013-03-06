@@ -37,15 +37,18 @@
 -(void) init_physics:( b2World* ) world :(int) num_segment;
 {
     //define our contants
-    float   ball_radius_inner = 1.0f;
-    float   ball_radius_outter = 0.2f;
-    float   ball_outter_distance = 3.4;//should bigger than ball_radius_inner + ball_radius_outter
+    float   ball_radius_inner = 0.4f;
+    float   ball_radius_outter = 0.25f;
+    float   ball_outter_distance = 1.3;//should bigger than ball_radius_inner + ball_radius_outter
     
     m_num_segment = num_segment;
     b2Vec2 pos = b2Vec2(position_.x/PTM_RATIO, position_.y/PTM_RATIO);
     m_inner_ball = [self create_ball: world :pos :ball_radius_inner ];
     
-    
+    b2MassData mass_data;
+    m_inner_ball->GetMassData(&mass_data);
+    mass_data.mass*=5;
+    m_inner_ball->SetMassData(&mass_data);
     
     for ( int i = 0; i < num_segment; i++ )
     {
@@ -61,7 +64,7 @@
         int neighbor = (i + 1) % num_segment;
         b2Body *current_ball = m_outter_balls[i];
         b2Body *neighbor_ball = m_outter_balls[neighbor];
-        float frequencyHz = 30;
+        float frequencyHz = 10;
         float damping = 0.5f;
         
  
@@ -154,23 +157,34 @@ ccTex2F make_uv( float x, float y)
 -(void) draw
 {
     //顶点数据
-    
-    
+
     CGPoint pos = ccp( [self nodeToParentTransform].tx, [self nodeToParentTransform].ty);
     
     //设置扇形中心点坐标
     m_vertices[0].vertices = make_vec( m_inner_ball->GetPosition().x * PTM_RATIO - pos.x, m_inner_ball->GetPosition().y * PTM_RATIO  - pos.y );
     //设置扇形中心点uv
     m_vertices[0].texCoords = make_uv(0.5f, 0.5f);
-    m_vertices[0].colors = ccc4(255, 255, 255, 50);
+    m_vertices[0].colors = ccc4(255, 255, 255, 255);
     
     for ( int i = 0; i < m_num_segment; i++ )
     {
         b2Body *current_ball = m_outter_balls[i];
-        m_vertices[i+1].vertices = make_vec( current_ball->GetPosition().x * PTM_RATIO  - pos.x, current_ball->GetPosition().y * PTM_RATIO  - pos.y );
+        ccVertex3F outer_vec = make_vec( current_ball->GetPosition().x * PTM_RATIO  - pos.x, current_ball->GetPosition().y * PTM_RATIO  - pos.y );
+        ccVertex3F outer_dir;
+
+        float x = outer_vec.x - m_vertices[0].vertices.x;
+        float y = outer_vec.y - m_vertices[0].vertices.y;
+        float len = sqrtf( x*x + y*y);
+        outer_dir.z = 0;
+        outer_dir.x = x / len;
+        outer_dir.y = y / len;
+        outer_vec.x = m_vertices[0].vertices.x + outer_dir.x * (len+0.2* PTM_RATIO);
+        outer_vec.y = m_vertices[0].vertices.y + outer_dir.y * (len+0.2* PTM_RATIO);
+        
+        m_vertices[i+1].vertices = outer_vec;//( current_ball->GetPosition().x * PTM_RATIO  - pos.x, current_ball->GetPosition().y * PTM_RATIO  - pos.y );
         GLfloat rad =  CC_DEGREES_TO_RADIANS(360.0f/m_num_segment * i);
         m_vertices[i+1].texCoords = make_uv( 0.5+cosf(rad)*0.5, 0.5+sinf(rad)*-0.5   );
-        m_vertices[i+1].colors = ccc4(255, 255, 255, 50);
+        m_vertices[i+1].colors = ccc4(255, 255, 255, 255);
     }
     
     //封闭扇形

@@ -75,7 +75,6 @@ soft_ball* g_ball;
 		
 		
         [self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
-		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
@@ -234,7 +233,7 @@ soft_ball* g_ball;
 	[ self addChild:ball ];
 	
 	ball.position = ccp( p.x, p.y);
-	[ ball init_physics:world :30 ];
+	[ ball init_physics:world :16 ];
     
     g_ball = ball;
 
@@ -274,9 +273,7 @@ soft_ball* g_ball;
 		CGPoint location = [touch locationInView: [touch view]];
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
-       // g_ball->m_inner_ball->ApplyForceToCenter(b2Vec2(100,1000));
-        g_ball->m_inner_ball->SetLinearVelocity(b2Vec2(1000,0));
-		//[self addNewSpriteAtPosition: location];
+		[self addNewSpriteAtPosition: location];
 	}
 }
 
