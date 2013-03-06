@@ -39,7 +39,7 @@
     //define our contants
     float   ball_radius_inner = 1.0f;
     float   ball_radius_outter = 0.1f;
-    float   ball_outter_distance = 1.5;
+    float   ball_outter_distance = 1.3;
 
     m_num_segment = num_segment;
     b2Vec2 pos = b2Vec2(position_.x/PTM_RATIO, position_.y/PTM_RATIO);
@@ -61,8 +61,8 @@
         int neighbor = (i + 1) % num_segment;
         b2Body *current_ball = m_outter_balls[i];
         b2Body *neighbor_ball = m_outter_balls[neighbor];
-        float frequencyHz = 30;
-        float damping = 0.6;
+        float frequencyHz = 15;
+        float damping = 0.5f;
         // Connect the outer circles to each other
         b2DistanceJointDef joint;
         
