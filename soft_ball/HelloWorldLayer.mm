@@ -73,8 +73,11 @@ soft_ball* g_ball;
 #endif
 		[self addChild:parent z:0 tag:kTagParentNode];
 		
-		
-        [self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
+		for ( int i = 0; i < 8; i++ )
+        {
+            [self addNewSpriteAtPosition:ccp(s.width/9*i+150, 100)];
+            [self addNewSpriteAtPosition:ccp(s.width/9*i+100, s.height/2)];
+        }
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
@@ -269,19 +272,19 @@ soft_ball* g_ball;
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	//Add a new body/atlas sprite at the touched location
-	for( UITouch *touch in touches ) {
-		CGPoint location = [touch locationInView: [touch view]];
-		
-		location = [[CCDirector sharedDirector] convertToGL: location];
-		[self addNewSpriteAtPosition: location];
-	}
+//	for( UITouch *touch in touches ) {
+//		CGPoint location = [touch locationInView: [touch view]];
+//		
+//		location = [[CCDirector sharedDirector] convertToGL: location];
+//		[self addNewSpriteAtPosition: location];
+//	}
 }
 
 #pragma mark accelerometer
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-    float g = 30;
+    float g = 10;
     //使用landscape，所以x,y互换
     world->SetGravity(b2Vec2(acceleration.y*g, -acceleration.x*g));
 }

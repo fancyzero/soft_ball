@@ -46,9 +46,9 @@
     m_inner_ball = [self create_ball: world :pos :ball_radius_inner ];
     
     b2MassData mass_data;
-    m_inner_ball->GetMassData(&mass_data);
-    mass_data.mass*=5;
-    m_inner_ball->SetMassData(&mass_data);
+    //    m_inner_ball->GetMassData(&mass_data);
+    //    mass_data.mass*=5;
+    //    m_inner_ball->SetMassData(&mass_data);
     
     for ( int i = 0; i < num_segment; i++ )
     {
@@ -67,30 +67,29 @@
         float frequencyHz = 10;
         float damping = 0.5f;
         
- 
+        
         
         
         //用joint连接所有ball
         
-         b2DistanceJointDef joint;
-         
-         joint.Initialize(current_ball, neighbor_ball,
-         current_ball->GetWorldCenter(),
-         neighbor_ball->GetWorldCenter() );
-         joint.collideConnected = true;
-//         joint.frequencyHz = 0;
-//         joint.dampingRatio = damping;/
-         
-         world->CreateJoint(&joint);
-         
-         // Connect the center circle with other circles
-         joint.Initialize(current_ball, m_inner_ball, current_ball->GetWorldCenter(), m_inner_ball->GetWorldCenter());
-         joint.collideConnected = true;
-         joint.frequencyHz = frequencyHz;
-         joint.dampingRatio = damping;
-         
-         world->CreateJoint(&joint);
-         
+        b2DistanceJointDef joint;
+        
+        // 连接相邻的ball
+        joint.Initialize(current_ball, neighbor_ball,
+                         current_ball->GetWorldCenter(),
+                         neighbor_ball->GetWorldCenter() );
+        joint.collideConnected = true;
+        joint.frequencyHz = frequencyHz;
+        joint.dampingRatio = damping;
+        world->CreateJoint(&joint);
+        // 连接中心点
+        joint.Initialize(current_ball, m_inner_ball, current_ball->GetWorldCenter(), m_inner_ball->GetWorldCenter());
+        joint.collideConnected = true;
+        joint.frequencyHz = frequencyHz;
+        joint.dampingRatio = damping;
+        
+        world->CreateJoint(&joint);
+        
         
     }
 }
@@ -157,7 +156,7 @@ ccTex2F make_uv( float x, float y)
 -(void) draw
 {
     //顶点数据
-
+    //return;
     CGPoint pos = ccp( [self nodeToParentTransform].tx, [self nodeToParentTransform].ty);
     
     //设置扇形中心点坐标
@@ -171,7 +170,7 @@ ccTex2F make_uv( float x, float y)
         b2Body *current_ball = m_outter_balls[i];
         ccVertex3F outer_vec = make_vec( current_ball->GetPosition().x * PTM_RATIO  - pos.x, current_ball->GetPosition().y * PTM_RATIO  - pos.y );
         ccVertex3F outer_dir;
-
+        
         float x = outer_vec.x - m_vertices[0].vertices.x;
         float y = outer_vec.y - m_vertices[0].vertices.y;
         float len = sqrtf( x*x + y*y);
